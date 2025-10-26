@@ -76,7 +76,7 @@ Will first (step 1) read the smiles from the .csv file add the hydrogens to the 
 
 # AutoDock Vina docking
 
-Now we are ready to run the vina docking. To do so in the folder AutoDock-Vina/ just run the following command:
+Now we are ready to run the Vina docking. To do so in the folder AutoDock-Vina/ just run the following command:
 
 ```
 $ python vina-batch.py
@@ -88,4 +88,5 @@ This command will run for each ligand the docking one by one using this command:
 $ vina --receptor receptor/1H1Q-receptor.pdbqt --ligand ligands/0-prepared.pdbqt --config receptor/1H1Q-receptor.box.txt --exhaustiveness 100 --out poses/0-vina-out.pdbqt --num_modes 20
 ```
 
-Alternatively to the python vina-batch.py one can also use the flag --batch when running vina, but I prefer to have more control over the order and the outputs. Infact by using my comand in the poses/ folder you can find both the pdbqt files but also the specific docking output. 
+Alternatively to the python vina-batch.py one can also use the flag --batch when running the vina command, but I prefer to have more control over the order and the outputs. In fact, by using my command in the poses/ folder, you can find both the pdbqt files and the specific docking output. In poses, you can also find ranking.py, which will take the list of ligands and add one more column with the best docking score from Vina. This new file is called list_with_affinities.csv and can be found with all the rest of the docking .pdbqt files in the folder Autodock-Vina/poses/.
+
