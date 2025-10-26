@@ -90,3 +90,49 @@ $ vina --receptor receptor/1H1Q-receptor.pdbqt --ligand ligands/0-prepared.pdbqt
 
 Alternatively to the python vina-batch.py one can also use the flag --batch when running the vina command, but I prefer to have more control over the order and the outputs. In fact, by using my command in the poses/ folder, you can find both the pdbqt files and the specific docking output. In poses, you can also find ranking.py, which will take the list of ligands and add one more column with the best docking score from Vina. This new file is called list_with_affinities.csv and can be found with all the rest of the docking .pdbqt files in the folder Autodock-Vina/poses/.
 
+# ML docking: Boltz
+
+Now you can navigate in boltz folder where again you can find the `boltz-processing.py` file that can run all the files for you. Otherwise, you can manually go over each of them. 
+
+The `processing.py` will place in the `boltz-configuration-files` folder the .yaml files, where we define how we want to run the prediction. Specifically, this file will open `Autodock-Vina/ligands/list.csv`, which contains the ligands, and extract the SMILES strings. For each SMILES string, it will generate a file named `0.yaml`, `1.yaml`, and so on. In these files, we specify that we will calculate the affinity using the Boltz-2 method, and we have constrained the binding within the pocket where residues 83 and 134 point into the cavity. 
+
+```
+version: 1  # Optional, defaults to 1
+sequences:
+  - protein:
+      id: A
+      sequence: GPLGSMENFQKVEKIGEGTYGVVYKARNKLTGEVVALKKIRLDTETEGVPSTAIREISLLKELNHPNIVKLLDVIHTENKLYLVFEFLHQDLKKFMDASALTGIPLPLIKSYLFQLLQGLAFCHSHRVLHRDLKPQNLLINTEGAIKLADFGLARAFGVPVRTYTHEVVTLWYRAPEILLGCKYYSTAVDIWSLGCIFAEMVTRRALFPGDSEIDQLFRIFRTLGTPDEVVWPGVTSMPDYKPSFPKWARQDFSKVVPPLDEDGRSLLSQMLHYDPNKRISAKAALAHPFFQDVTKPVPHLRL
+  - ligand:
+      id: B
+      smiles: 'C1CCC(COc2c3c(nc[nH]3)nc(Nc3ccccc3)n2)CC1' # Grabbed from the list.csv file, it's every time different
+properties:
+  - affinity:
+      binder: B
+constraints:
+  - pocket:
+      binder: B
+      contacts: [ [ A, 83 ], [ A, 134 ] ]
+```
+
+After generating this file, the `boltz-processing.py` will run the prediction as following:
+
+```
+$ boltz predict boltz-configuration-files/0.yaml --use_msa_server --out_dir boltz-results --recycling_steps 1 --sampling_steps 50 --diffusion_samples 3 --step_scale 1.2
+                
+```
+
+For each smile, it will generate a prediction that can be found in boltz-results/boltz-results_0/predictions/0/affinity.json, which looks like this:
+
+```
+{
+    "affinity_pred_value": -0.6497622728347778,
+    "affinity_probability_binary": 0.8011776208877563,
+    "affinity_pred_value1": -0.6406533718109131,
+    "affinity_probability_binary1": 0.7879448533058167,
+    "affinity_pred_value2": -0.6588712334632874,
+    "affinity_probability_binary2": 0.8144103288650513
+}
+                
+```
+
+Once all the ligands are done, you can run the 'boltz-processing.py' file, which, once again, will take the file with the docking scores from Vina (list_with_affinities.csv) and it will update it with the Boltz prediction by adding another column. 
