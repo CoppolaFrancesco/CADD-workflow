@@ -74,3 +74,18 @@ $ python ligand-preparation.py
 
 Will first (step 1) read the smiles from the .csv file add the hydrogens to the molecules and also generate different conformers with the help of molscrub, and then in step 2 with Meeko is going to generate the .pdbqt files for each ligands saving the files by their resIDs. At the end, in the ligands folder you should see the .sdf and .pdbqt files for each smiles in your list.csv.
 
+# AutoDock Vina docking
+
+Now we are ready to run the vina docking. To do so in the folder AutoDock-Vina/ just run the following command:
+
+```
+$ python vina-batch.py
+```
+
+This command will run for each ligand the docking one by one using this command:
+
+```
+$ vina --receptor receptor/1H1Q-receptor.pdbqt --ligand ligands/0-prepared.pdbqt --config receptor/1H1Q-receptor.box.txt --exhaustiveness 100 --out poses/0-vina-out.pdbqt --num_modes 20
+```
+
+Alternatively to the python vina-batch.py one can also use the flag --batch when running vina, but I prefer to have more control over the order and the outputs. Infact by using my comand in the poses/ folder you can find both the pdbqt files but also the specific docking output. 
