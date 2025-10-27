@@ -35,7 +35,13 @@ pip install boltz
 
 In my case, I don't have a dedicated GPU, and I will run everything on the CPU.
 
+I will also need a dedicated environment for DeepChem package used for calculating additional properties:
 
+```
+conda create -n deepchem_env
+conda activate deepchem_env
+pip install deepchem
+```
 # Receptor preparation
 
 For this demonstration, I'm using the CDK2 (PDB 1H1Q). Inside these files, there are usually many waters (some of them are important!), cofactors, other proteins, and ligands. For now, for simplicity, we are going to take only the receptor. I recommend two ways: using [VMD](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD) or the PDB Reader & Manipulator in [CHARMM-GUI](https://www.charmm-gui.org/?doc=input/pdbreader). In step 1, you will be prompted to select which chain you want to model; in my case, it’s chain A (segid PROA). Step 2 is particularly important because it allows us to manipulate the PDB file. We need to carefully consider the protonation states and any missing residues. Once done, we can download the pdb file, which I also provide in the folder data/receptor/1H1Q-CHARMM-GUI.pdb along with the following generated files.
