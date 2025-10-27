@@ -228,7 +228,7 @@ We will see a new file called `list_with_affinities.csv` in the folder `Autodock
 
 
 ### Automatization
-To streamline the process, `Autodock-Vina` includes a bash script named `run-vina.sh`. Below is the log information generated during the script's execution.
+To streamline the process, there is a bash script named `run-vina.sh`. Below is the log information generated during the script's execution.
 **Note: this is not the actual dataset utilized, but a small sample to illustrate the outputs.**
 
 ```
