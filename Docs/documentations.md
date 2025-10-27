@@ -579,4 +579,26 @@ Finally, we can run the last file, `additional-descriptor.py`
 python additional-descriptor.py
 ```
 
-This file is going
+This file is going to create the final table `candidates.csv`. In this table, we will include many descriptors that can be extremely useful for understanding the final candidate molecules. 
+
+Let's begin with the analysis of Lipinski's Rule of Five, which is a fundamental principle in drug discovery used to predict oral bioavailability based on four key molecular properties:
+
+- **Molecular Weight:** Should be ≤500 Da, as larger molecules typically have poor absorption.
+- **LogP:** Should be ≤5, since excessive lipophilicity can lead to poor solubility and increased toxicity.
+- **Hydrogen Bond Donors:** Should be ≤5, as having too many donors can reduce permeability.
+- **Hydrogen Bond Acceptors:** Should be ≤10, as excessive hydrogen bonding can hinder the ability to cross cell membranes. 
+
+This guideline helps in assessing the potential success of a compound as an oral drug. However, we don't know if in this case out molecule is going to be an oral drug. Compounds are considered drug-like if they violate no more than one of these criteria. Additionally, the number of rotatable bonds is assessed, as excessive flexibility (>10 rotatable bonds) can reduce binding affinity due to entropic penalties. So this first section will give us the following columns: `molecular_weight`, `logP`,	`num_h_donors`,	`num_h_acceptors`,	`num_rotatable_bonds`,	`lipinski_violations`,	and `lipinski_pass`.	
+
+The QED (Quantitative Estimation of Drug-likeness) score offers a more detailed evaluation of drug-likeness by combining eight molecular properties, which are weighted according to their significance for oral medications. The score ranges from 0 to 1, with the following classifications:
+
+- 0.7 to 1.0: Excellent drug-likeness
+- 0.5 to 0.7: Good drug-likeness
+- 0.3 to 0.5: Moderate drug-likeness
+- Below 0.3: Poor drug-likeness
+
+These features are added with the following names in the candidates list: `qed_score` and	`qed_classification`.
+
+The Topological Polar Surface Area (TPSA) measures the surface area occupied by polar atoms (oxygen and nitrogen) and their attached hydrogens. This descriptor strongly correlates with membrane permeability and blood-brain barrier penetration. For oral drugs the range should be around 40-100 A^2. Values below 40 A^2 indicate excessive lipophilicity (poor solubility, off-target effects). Values above 100 A^2 suggest poor membrane permeability. 
+
+The ATP binding pocket of kinases contains aromatic residues that engage in π-π stacking interactions with inhibitors.
