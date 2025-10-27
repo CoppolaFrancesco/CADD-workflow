@@ -73,4 +73,14 @@ If everything has been installed correctly, we can now run the workflow by activ
 conda activate vina
 ./run-vina.sh
 ```
+
 At the end, inside the 'Autodock-Vina/poses', you will find the dataset with the vina scores 'list_with_affinities.csv'. 
+
+Next, we can run the bash code for boltz and sort the best candidates (again this can also be run as singles step by following the 'Docs/documentations.md'):
+
+```
+conda activate boltz2
+./run-boltz.sh
+```
+
+At the end, we will see in the main folder two new files: 'list-sorted.csv' and 'list-best10.csv'. In this case, the sorting is based on the average binding energy obtained by both methods. 
