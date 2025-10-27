@@ -1,24 +1,28 @@
+## Table of Contents
+* [Detailed Documentation](#detailed-documentation)
+  * [Receptor Preparation](#receptor-preparation)
+  * [Ligand Preparation](#ligands-preparation)
+* [AutoDock Vina](#autodock-vina)
+* [Boltz](#boltz)
+
+
 # Detailed Documentation
+In this document, we will go over every single step without using the automated bash.sh codes. All these used files are provided in each folder as described below. 
 
-# Documentation
-# Receptor preparation
+## Receptor Preparation
 
-For this demonstration, I'm using the CDK2 (PDB 1H1Q). Inside these files, there are usually many waters (some of them are important!), cofactors, other proteins, and ligands. For now, for simplicity, we are going to take only the receptor. I recommend two ways: using [VMD](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD) or the PDB Reader & Manipulator in [CHARMM-GUI](https://www.charmm-gui.org/?doc=input/pdbreader). In step 1, you will be prompted to select which chain you want to model; in my case, it’s chain A (segid PROA). Step 2 is particularly important because it allows us to manipulate the PDB file. We need to carefully consider the protonation states and any missing residues. Once done, we can download the pdb file, which I also provide in the folder data/receptor/1H1Q-CHARMM-GUI.pdb along with the following generated files.
+For this demonstration, I am using CDK2 (PDB 1H1Q). The PDB files typically contain many water molecules (some of which are important!), cofactors, other proteins, and ligands. For now, for simplicity, we are going to take only the receptor. I suggest two approaches: one is to use [VMD](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD) or the PDB Reader & Manipulator in [CHARMM-GUI](https://www.charmm-gui.org/?doc=input/pdbreader). In Step 1, you will be prompted to select the chain you want to model; in my case, I chose chain A (segid PROA). Step 2 is particularly important, as it allows us to manipulate the PDB file. We need to carefully consider the protonation states and any missing residues. Once we have completed these steps, we can download the PDB file. I have also included this file in the folder `Autodock-Vina/receptor/1H1Q-CHARMM-GUI.pdb`, along with the other generated files.
 
 We need to generate the PDBQT file for our receptor, which is a modified .pdb file that includes partial charges and atom types. 
 
-In my case, I'm using [Meeko](https://meeko.readthedocs.io/en/release-doc/):
-```
-$ conda install meeko
-```
+Using Meeko (which is already installed), we can generate the PDBQT file of our receptor along with the docking pocket box. I approximated the dimensions of the box based on the crystallographic structure of the complex with the ligand NU6094. This box will define the area for our docking search. 
 
-After installation, we can generate the PDBQT file of our receptor, along with the docking pocket box, which I approximated based on the crystallographic structure of the complex with the ligand NU6094.
 ```
 mk_prepare_receptor.py -i 1H1Q-CHARMM-GUI.pdb -o 1H1Q-prepared -p -v --box_size 20 20 20 --box_center 6.145 44.175 50.827 
 ```
 This command should now generate the following files 1H1Q-prepared.pdbqt, 1H1Q-prepared.box.txt and 1H1Q-prepared.box.pdb which concluded our receptor preparation.
 
-# Ligand preparation
+## Ligands Preparation
 
 For the dataset preparation, I used the [cheese search](https://cheese.deepmedchem.com/), in particular by looking only in the Mcule Full database, by using a search method called [Shape: 3D volume overlap](https://chemrxiv.org/engage/chemrxiv/article-details/67250915f9980725cfcd1f6f). In the dataset I tried to have few analogs of the ligand (NU6094) and some diverse compounds in both structural similarity and number of
 rotatable bonds. I selected around 300 molecules and exported as .csv file. The .csv will have now the following structure: first column is the smile, second column the id-num 0 to 300. Now in the folder data/ligands you will also find a file called ligand-preparation.py which if you run it 
@@ -30,7 +34,7 @@ $ python ligand-preparation.py
 
 Will first (step 1) read the smiles from the .csv file add the hydrogens to the molecules and also generate different conformers with the help of molscrub, and then in step 2 with Meeko is going to generate the .pdbqt files for each ligands saving the files by their resIDs. At the end, in the ligands folder you should see the .sdf and .pdbqt files for each smiles in your list.csv.
 
-# AutoDock Vina docking
+# AutoDock Vina
 
 Now we are ready to run the Vina docking. To do so in the folder AutoDock-Vina/ just run the following command:
 
@@ -230,7 +234,7 @@ Top 10 Best Binders:
 (vina) francesco@Mac TEST2 % 
 ```
 
-# ML docking: Boltz
+# Boltz
 
 Now you can navigate in boltz folder where again you can find the `boltz-processing.py` file that can run all the files for you. Otherwise, you can manually go over each of them. 
 
