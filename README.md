@@ -83,4 +83,106 @@ conda activate boltz2
 ./run-boltz.sh
 ```
 
-At the end, we will see in the main folder two new files: 'list-sorted.csv' and 'list-best10.csv'. In this case, the sorting is based on the average binding energy obtained by both methods. 
+At the end, we will see in the main boltz folder the file 'list_with_affinities_boltz.csv'.
+
+'list-sorted.csv' and 'list-best10.csv'. In this case, the sorting is based on the average binding energy obtained by both methods. 
+
+Finally, we can run DeepChem and RDKit for sorting the molecules and the additional properties calculation
+
+```
+conda activate deepchem_env
+python sorting.py
+python additional-descriptors.py
+```
+
+Now we should see the full list of candidates ordered by the average binding energy obtained by both docking methods 'list-sorted.csv', the best 'list-best10.csv' and 'candidates.csv' with feature extractions. The console should also prints you the final results:
+
+```
+📄 Loaded 10 molecules from list-best10.csv
+
+Processing molecule 1/10...
+Processing molecule 2/10...
+Processing molecule 3/10...
+Processing molecule 4/10...
+Processing molecule 5/10...
+Processing molecule 6/10...
+Processing molecule 7/10...
+Processing molecule 8/10...
+Processing molecule 9/10...
+Processing molecule 10/10...
+
+✅ Saved 10 candidates to 'candidates.csv'
+
+📊 Property Categories Added:
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🔹 Lipinski Properties:
+      • molecular_weight, logP, H-donors/acceptors
+      • rotatable_bonds, violations, pass/fail
+
+   🔹 Drug-likeness:
+      • qed_score, qed_classification
+
+   🔹 Kinase-Specific Properties:
+      • TPSA (polar surface area)
+      • aromatic_rings (ATP pocket binding)
+      • heteroatoms (hinge H-bonding)
+      • ring counts, Fsp3
+      • molar_refractivity
+      • kinase_score (custom scoring)
+
+   🔹 Synthetic Accessibility:
+      • sa_score, sa_category
+
+   🔹 Additional Descriptors:
+      • stereo_centers, formal_charge
+      • structural complexity indices
+
+   🔹 ADMET Properties (DeepChem):
+      • solubility_logs, solubility_class
+      • bbb_permeability (CNS penetration)
+      • cyp3a4_inhibitor (drug-drug interactions)
+      • herg_liability (cardiac toxicity)
+      • clearance_pred (elimination rate)
+
+==================================================
+                 ANALYSIS SUMMARY                 
+==================================================
+
+🎯 Drug-likeness:
+   Lipinski pass: 10/10
+   Average QED: 0.528
+   QED ≥ 0.7 (Excellent): 1/10
+
+🧬 Kinase-Specific Metrics:
+   Avg aromatic rings: 3.4
+   Avg TPSA: 88.0 Ų
+   TPSA in ideal range (40-100): 7/10
+   Avg kinase score: 10.1/11
+   High kinase score (≥8): 9/10
+
+💊 ADMET Profile:
+   Avg solubility (LogS): -6.78
+   Soluble compounds: 0/10
+   BBB permeability (Likely): 6/10
+   CYP3A4 low risk: 4/10
+   hERG low risk: 0/10
+
+📋 Top 3 candidates by kinase score:
+
+   ID: 0
+      Kinase score: 11, QED: 0.740
+      TPSA: 75.7, Aromatic rings: 3
+      Solubility: Poorly soluble, hERG: High risk
+
+   ID: 25
+      Kinase score: 11, QED: 0.465
+      TPSA: 78.5, Aromatic rings: 4
+      Solubility: Poorly soluble, hERG: High risk
+
+   ID: 125
+      Kinase score: 11, QED: 0.530
+      TPSA: 78.5, Aromatic rings: 3
+      Solubility: Poorly soluble, hERG: High risk
+
+==================================================
+```
