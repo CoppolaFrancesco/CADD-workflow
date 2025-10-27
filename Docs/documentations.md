@@ -9,7 +9,9 @@
 * [Boltz](#boltz)
 
 # Detailed Documentation
-In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock. Creating a separate block for this alternative during the design of the workflow provides several benefits, enhancing the overall flexibility of the workflow. Every step is also logged, and I will report in this documentation the outputs. 
+In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock. Creating a separate block for this alternative during the design of the workflow provides several benefits, enhancing the overall flexibility of the workflow. Another interesting feature of this architecture is that it allows us to easily add a parallelization process in the future, where we can create and process a batch of several ligands on different devices without big modifications.
+
+Every step is logged, and I will report in this documentation the outputs. 
 
 # Files Preparation
 
@@ -20,6 +22,8 @@ In this demonstration, I will be using CDK2 as the target protein, which is repr
 We need to generate the PDBQT file for our receptor, which is a modified .pdb file that includes partial charges and atom types. Using Meeko (which was already installed in the [introduction](../README.md)), we can generate the PDBQT file of our receptor along with the docking pocket box. I approximated the dimensions of the box based on the crystallographic structure of the complex with the ligand NU6094. This box will define the area for our docking search. 
 
 ```
+# make sure you are in the vina environment
+conda activate vina
 mk_prepare_receptor.py -i 1H1Q-receptor-only.pdb -o 1H1Q-prepared -p -v --box_size 20 20 20 --box_center 6.145 44.175 50.827 
 ```
 
@@ -38,15 +42,101 @@ Files written:
 
 ## Ligands Preparation
 
-For the dataset preparation, I used the [cheese search](https://cheese.deepmedchem.com/), in particular by looking only in the Mcule Full database, by using a search method called [Shape: 3D volume overlap](https://chemrxiv.org/engage/chemrxiv/article-details/67250915f9980725cfcd1f6f). In the dataset I tried to have few analogs of the ligand (NU6094) and some diverse compounds in both structural similarity and number of
-rotatable bonds. I selected around 300 molecules and exported as .csv file. The .csv will have now the following structure: first column is the smile, second column the id-num 0 to 300. Now in the folder data/ligands you will also find a file called ligand-preparation.py which if you run it 
+For the dataset preparation, I used the [cheese search](https://cheese.deepmedchem.com/). Specifically, by searching exclusively in the Mcule Full database, using a method known as [Shape: 3D volume overlap](https://chemrxiv.org/engage/chemrxiv/article-details/67250915f9980725cfcd1f6f). In the dataset, I aimed to include a few analogs of the ligand (NU6094) as well as a range of diverse compounds with different structural similarities and numbers of rotatable bonds. I selected approximately 300 molecules and exported them as a CSV file. The CSV file is structured so that the first column contains the SMILES representation. We need to review each smile, add the hydrogens using Molscrub, save the result as a .sdf file, and then generate .pdbqt files with Meeko. 
+
+These are the two ideally steps that one should run:
 
 ```
-$ cd data/ligands
-$ python ligand-preparation.py
+# make sure you are in the vina environment
+conda activate vina
+scrub.py "smile 1" -o 0-prepared.sdf
+mk_prepare_ligand.py -i 0-prepared.sdf -o 0-prepared.pdbqt
 ```
 
-Will first (step 1) read the smiles from the .csv file add the hydrogens to the molecules and also generate different conformers with the help of molscrub, and then in step 2 with Meeko is going to generate the .pdbqt files for each ligands saving the files by their resIDs. At the end, in the ligands folder you should see the .sdf and .pdbqt files for each smiles in your list.csv.
+However, in the folder `Autodock-Vina/ligands`, you will find a file named `ligand-preparation.py` which automatically performs all these iterations for you.
+
+```
+# make sure you are in the vina environment
+conda activate vina
+cd Autodock-Vina/ligands
+python ligand-preparation.py
+```
+
+This code adds a second column to the file, numbering the molecules from 0 to 300. The output will be saved as `list.csv`. In step 2, the code reads the SMILES strings from the `list.csv` file, adds hydrogens to the molecules, and generates different conformers using molscrub. Then, in step 3, Meeko will create the .pdbqt files for each ligand, saving the files according to their num-id. At the end, you should find the .sdf and .pdbqt files for each SMILES string in your `list.csv` file located in the ligands folder. This is the output of this command:
+
+```
+(vina) francesco@Mac ligands % python ligands-preparation.py 
+======================================================================
+STEP 1: Looking for cheese*.csv file to create list.csv
+======================================================================
+
+--- Processing cheese file: ./cheese-full-list-mcule.csv ---
+--- Output will be saved to: ./list.csv ---
+✓ Created ./list.csv with 'id-num' column added
+  Total data rows: 297
+
+======================================================================
+STEP 2: Ligand Preparation Pipeline
+======================================================================
+
+--- Starting Ligand Preparation Pipeline for: ./list.csv ---
+
+Header row: ['smiles', 'id-num', 'id', 'database', 'db_id', 'similarity', 'caco2_wang', 'clearance_hepatocyte_az', 'clearance_microsome_az', 'half_life_obach', 'ld50_zhu', 'lipophilicity_astrazeneca', 'ppbr_az', 'solubility_aqsoldb', 'vdss_lombardo', 'ames', 'bbb_martins', 'bioavailability_ma', 'cyp2c9_substrate_carbonmangels', 'cyp2c9_veith', 'cyp2d6_substrate_carbonmangels', 'cyp2d6_veith', 'cyp3a4_substrate_carbonmangels', 'cyp3a4_veith', 'dili', 'herg', 'hia_hou', 'pgp_broccatelli', 'molecular_weight', 'formal_charge', 'clogp', 'heavy_atoms', 'h_bond_acceptors', 'h_bond_donor', 'rotatable_bonds', 'num_of_rings', 'molar_refractivity', 'number_of_atoms', 'topological_surface_area_mapping']
+
+[Ligand 1] Processing ID: 0
+  SMILES: C1CCC(COc2c3c(nc[nH]3)nc(Nc3ccccc3)n2)CC1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '0-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '0-prepared.pdbqt'
+
+[Ligand 2] Processing ID: 1
+  SMILES: COc1ccc(Nc2nc(NCC3CCCO3)c3ccccc3n2)cc1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '1-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '1-prepared.pdbqt'
+
+[Ligand 3] Processing ID: 2
+  SMILES: COc1ccc(Nc2nc(NCC3CCCO3)nc3nccnc23)cc1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '2-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '2-prepared.pdbqt'
+
+.......I'M CUTTING SOME OUTPUTS.......
+
+[Ligand 297] Processing ID: 296
+  SMILES: CCc1ccc(Nc2nc(NCCCO)nc3c2cnn3C)cc1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '296-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '296-prepared.pdbqt'
+
+
+======================================================================
+--- PIPELINE VERIFICATION REPORT ---
+======================================================================
+
+1. FILE EXISTENCE CHECK:
+----------------------------------------------------------------------
+
+2. PROCESSING SUMMARY:
+----------------------------------------------------------------------
+Total ligands processed:          297
+Successfully converted to PDBQT:  297
+Failed conversions:               0
+Missing SDF files:                0
+Missing PDBQT files:              0
+
+Success rate:                     100.0%
+
+======================================================================
+✓ SUCCESS: All ligands were successfully converted!
+======================================================================
+
+--- Pipeline finished: Processed 297 ligands ---
+```
 
 # AutoDock Vina
 
