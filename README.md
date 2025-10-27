@@ -95,6 +95,190 @@ $ vina --receptor receptor/1H1Q-receptor.pdbqt --ligand ligands/0-prepared.pdbqt
 
 Alternatively to the python vina-batch.py one can also use the flag --batch when running the vina command, but I prefer to have more control over the order and the outputs. In fact, by using my command in the poses/ folder, you can find both the pdbqt files and the specific docking output. In poses, you can also find ranking.py, which will take the list of ligands and add one more column with the best docking score from Vina. This new file is called list_with_affinities.csv and can be found with all the rest of the docking .pdbqt files in the folder Autodock-Vina/poses/.
 
+Here is the 
+
+```
+(vina) francesco@Mac TEST2 % ./run-vina.sh 
+======================================================================
+STEP 1: Looking for cheese*.csv file to create list.csv
+======================================================================
+
+--- Processing cheese file: ./cheese-fijijwdk.csv ---
+--- Output will be saved to: ./list.csv ---
+✓ Created ./list.csv with 'id-num' column added
+  Total data rows: 9
+
+======================================================================
+STEP 2: Ligand Preparation Pipeline
+======================================================================
+
+--- Starting Ligand Preparation Pipeline for: ./list.csv ---
+
+Header row: ['smiles', 'id-num', 'id-num', 'id', 'database', 'db_id', 'similarity', 'caco2_wang', 'clearance_hepatocyte_az', 'clearance_microsome_az', 'half_life_obach', 'ld50_zhu', 'lipophilicity_astrazeneca', 'ppbr_az', 'solubility_aqsoldb', 'vdss_lombardo', 'ames', 'bbb_martins', 'bioavailability_ma', 'cyp2c9_substrate_carbonmangels', 'cyp2c9_veith', 'cyp2d6_substrate_carbonmangels', 'cyp2d6_veith', 'cyp3a4_substrate_carbonmangels', 'cyp3a4_veith', 'dili', 'herg', 'hia_hou', 'pgp_broccatelli', 'molecular_weight', 'formal_charge', 'clogp', 'heavy_atoms', 'h_bond_acceptors', 'h_bond_donor', 'rotatable_bonds', 'num_of_rings', 'molar_refractivity', 'number_of_atoms', 'topological_surface_area_mapping']
+
+[Ligand 1] Processing ID: 0
+  SMILES: C1CCC(COc2c3c(nc[nH]3)nc(Nc3ccccc3)n2)CC1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '0-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '0-prepared.pdbqt'
+
+[Ligand 2] Processing ID: 1
+  SMILES: COc1ccc(Nc2nc(NCC3CCCO3)c3ccccc3n2)cc1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '1-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '1-prepared.pdbqt'
+
+[Ligand 3] Processing ID: 2
+  SMILES: COc1ccc(Nc2nc(NCC3CCCO3)nc3nccnc23)cc1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '2-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '2-prepared.pdbqt'
+
+[Ligand 4] Processing ID: 3
+  SMILES: COc1ccc(Nc2nc(NCC3CCCO3)nc3[nH]ncc23)cc1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '3-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '3-prepared.pdbqt'
+
+[Ligand 5] Processing ID: 4
+  SMILES: Cc1ccc(Nc2nc(NCC3CCCO3)nc(N)c2[N+](=O)[O-])cc1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '4-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '4-prepared.pdbqt'
+
+[Ligand 6] Processing ID: 5
+  SMILES: Cc1ccc(Nc2nc(NCCCO)c3ccccc3n2)cc1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '5-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '5-prepared.pdbqt'
+
+[Ligand 7] Processing ID: 6
+  SMILES: c1ccc(-c2cc(NCC3(Cn4cccn4)CC3)n3nccc3n2)cc1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '6-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '6-prepared.pdbqt'
+
+[Ligand 8] Processing ID: 7
+  SMILES: OCCCNc1nc(Nc2ccc(F)cc2)nc2ccccc12
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '7-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '7-prepared.pdbqt'
+
+[Ligand 9] Processing ID: 8
+  SMILES: CCCCNc1nc(Nc2ccccc2O)c2cnn(C)c2n1
+  > Step 1: Running scrub.py...
+  > scrub.py SUCCESS. SDF file created: '8-prepared.sdf'
+  > Step 2: Running mk_prepare_ligand.py...
+  > mk_prepare_ligand.py SUCCESS. PDBQT file created: '8-prepared.pdbqt'
+
+
+======================================================================
+--- PIPELINE VERIFICATION REPORT ---
+======================================================================
+
+1. FILE EXISTENCE CHECK:
+----------------------------------------------------------------------
+
+2. PROCESSING SUMMARY:
+----------------------------------------------------------------------
+Total ligands processed:          9
+Successfully converted to PDBQT:  9
+Failed conversions:               0
+Missing SDF files:                0
+Missing PDBQT files:              0
+
+Success rate:                     100.0%
+
+======================================================================
+✓ SUCCESS: All ligands were successfully converted!
+======================================================================
+
+--- Pipeline finished: Processed 9 ligands ---
+Found 9 ligand files
+Starting docking process...
+
+Processing ligand 0...
+  ✓ Completed: poses/0-vina-score.txt
+Processing ligand 1...
+  ✓ Completed: poses/1-vina-score.txt
+Processing ligand 2...
+  ✓ Completed: poses/2-vina-score.txt
+Processing ligand 3...
+  ✓ Completed: poses/3-vina-score.txt
+Processing ligand 4...
+  ✓ Completed: poses/4-vina-score.txt
+Processing ligand 5...
+  ✓ Completed: poses/5-vina-score.txt
+Processing ligand 6...
+  ✓ Completed: poses/6-vina-score.txt
+Processing ligand 7...
+  ✓ Completed: poses/7-vina-score.txt
+Processing ligand 8...
+  ✓ Completed: poses/8-vina-score.txt
+
+======================================================================
+DOCKING SUMMARY
+======================================================================
+
+Total ligands processed:     9
+Successful dockings:         9
+Failed dockings:             0
+
+Output files verification:
+  Score files (.txt):        9/9
+  Pose files (.pdbqt):       9/9
+
+Success rate:                100.0%
+
+All outputs saved in: /Users/francesco/Downloads/terra_quantum/TEST2/Autodock-Vina/poses/
+======================================================================
+
+✓ SUCCESS: All ligands docked successfully!
+======================================================================
+
+Running from Autodock-Vina directory
+Reading ligands data from: ligands/list.csv
+Using 'id-num' as the matching column
+Found 9 vina-score.txt files
+Successfully extracted 9 affinity values
+
+Results saved to: poses/list_with_affinities.csv
+
+============================================================
+AFFINITY STATISTICS
+============================================================
+Total ligands: 9
+Ligands with scores: 9
+Best affinity: -9.666 kcal/mol
+Worst affinity: -8.160 kcal/mol
+Mean affinity: -8.822 kcal/mol
+Median affinity: -8.826 kcal/mol
+============================================================
+
+Top 10 Best Binders:
+ id-num  vina_affinity
+      0         -9.666
+      1         -9.344
+      7         -8.856
+      5         -8.849
+      2         -8.826
+      4         -8.623
+      6         -8.559
+      3         -8.519
+      8         -8.160
+
+✓ Processing complete!
+(vina) francesco@Mac TEST2 % 
+```
+
 # ML docking: Boltz
 
 Now you can navigate in boltz folder where again you can find the `boltz-processing.py` file that can run all the files for you. Otherwise, you can manually go over each of them. 
