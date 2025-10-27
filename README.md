@@ -2,7 +2,7 @@
 A fully automated workflow for Drug Discovery
 
 # Introduction
-This workflow automates the process of screening multiple molecules against a specific protein target. Once the user selects the dataset of molecules and the receptor, two independent docking protocols will be executed: Vina docking and Boltz. A dedicated protocol will merge the two docking results, and additional features will be added. In the end, the most suitable candidates are presented to the user. 
+This workflow automates the process of screening multiple molecules (stored as SMILES in a .csv file) against a specific protein target. Once the user selects the dataset of molecules and the receptor, two independent docking protocols will be executed: Vina docking and Boltz. A dedicated protocol will merge the two docking results, and additional features will be added. In the end, the most suitable candidates are presented to the user. 
 
 <img src="Docs/summary.png" width="200">
 
@@ -65,9 +65,12 @@ pip install deepchem
 
 # Running the workflow
 
+Before running the workflow, we must prepare the ligands (a .csv file with smiles) and the receptor (see 'Docs/documentations.md'), but for simplicity, I'm already providing them in the 'Autodock-Vina/ligands' and 'Autodock-Vina/receptor'. 
+
 If everything has been installed correctly, we can now run the workflow by activating the environment and executing the following command:
 
 ```
 conda activate vina
 ./run-vina.sh
 ```
+At the end, inside the 'Autodock-Vina/poses', you will find the dataset with the vina scores 'list_with_affinities.csv'. 
