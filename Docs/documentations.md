@@ -140,24 +140,100 @@ Success rate:                     100.0%
 
 # AutoDock Vina
 
-Now we are ready to run the Vina docking. To do so in the folder AutoDock-Vina/ just run the following command:
+We are now ready to run the Vina docking process. To do this, navigate to the `AutoDock-Vina` folder and execute the following command:
 
 ```
-$ python vina-batch.py
+# Make sure you are in the vina environment
+conda activate vina
+python vina-batch.py
 ```
 
-This command will run for each ligand the docking one by one using this command:
+This command will perform docking for each ligand sequentially, using the following command:
 
 ```
-$ vina --receptor receptor/1H1Q-receptor.pdbqt --ligand ligands/0-prepared.pdbqt --config receptor/1H1Q-receptor.box.txt --exhaustiveness 100 --out poses/0-vina-out.pdbqt --num_modes 20
+vina --receptor receptor/1H1Q-receptor.pdbqt --ligand ligands/0-prepared.pdbqt --config receptor/1H1Q-receptor.box.txt --exhaustiveness 100 --out poses/0-vina-out.pdbqt --num_modes 20
 ```
 
-Alternatively to the python vina-batch.py one can also use the flag --batch when running the vina command, but I prefer to have more control over the order and the outputs. In fact, by using my command in the poses/ folder, you can find both the pdbqt files and the specific docking output. In poses, you can also find ranking.py, which will take the list of ligands and add one more column with the best docking score from Vina. This new file is called list_with_affinities.csv and can be found with all the rest of the docking .pdbqt files in the folder Autodock-Vina/poses/.
-
-Here is the 
+Instead of using the Python script `vina-batch.py`, you can also use the `--batch` flag when executing the vina command. However, I prefer to maintain more control over the order of operations and outputs. By using `vina-batch.py`, you will find both the .pdbqt files and the individual docking output files (such as `in-num docking output.txt`) in the `poses` folder. For example, for id-num 0 in `poses/`, we can find the files `0-vina-out.pdbqt` and `0-vina-score.txt`, which look like this:
 
 ```
-(vina) francesco@Mac TEST2 % ./run-vina.sh 
+AutoDock Vina v1.2.5
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: receptor/1H1Q-prepared.pdbqt
+Ligand: ligands/0-prepared.pdbqt
+Grid center: X 6.145 Y 44.175 Z 50.827
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 100
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 1415709252) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -9.723          0          0
+   2       -9.464      1.464      4.402
+   3       -9.361      2.411      6.166
+   4       -9.208     0.5783      1.526
+   5       -9.112      1.681       5.27
+   6       -9.066        1.5      4.525
+   7       -8.966      2.227      5.265
+   8       -8.938      2.073      5.325
+   9       -8.854      2.638      6.553
+  10       -8.823      2.594      6.006
+  11       -8.807      2.008      6.655
+  12       -8.801       1.46      2.194
+  13       -8.748        1.8      4.765
+  14       -8.741      2.153      6.883
+  15       -8.724      2.381      3.495
+  16       -8.722      2.684      5.305
+  17       -8.616      1.515        2.4
+  18        -8.53      2.398      5.233
+  19       -8.495      2.229      6.692
+  20       -8.229      2.419      5.247
+```
+
+In `poses`, you can also find `ranking.py`, which will take the list of ligands and add one more column with the best docking score from Vina. 
+
+```
+python ranking.py
+```
+
+We will see a new file called `list_with_affinities.csv` in the folder `Autodock-Vina/poses/`.
+
+
+### run-vina.sh automatization
+To streamline the process, `Autodock-Vina` includes a bash script named `run-vina.sh`. Below is the log information generated during the script's execution.
+**Note: this is not the actual dataset utilized, but a small sample to illustrate the outputs.**
+
+```
+# Make sure you are in the vina environment
+(base) francesco@Mac % conda activate vina
+(vina) francesco@Mac % ./run-vina.sh 
 ======================================================================
 STEP 1: Looking for cheese*.csv file to create list.csv
 ======================================================================
@@ -173,7 +249,7 @@ STEP 2: Ligand Preparation Pipeline
 
 --- Starting Ligand Preparation Pipeline for: ./list.csv ---
 
-Header row: ['smiles', 'id-num', 'id-num', 'id', 'database', 'db_id', 'similarity', 'caco2_wang', 'clearance_hepatocyte_az', 'clearance_microsome_az', 'half_life_obach', 'ld50_zhu', 'lipophilicity_astrazeneca', 'ppbr_az', 'solubility_aqsoldb', 'vdss_lombardo', 'ames', 'bbb_martins', 'bioavailability_ma', 'cyp2c9_substrate_carbonmangels', 'cyp2c9_veith', 'cyp2d6_substrate_carbonmangels', 'cyp2d6_veith', 'cyp3a4_substrate_carbonmangels', 'cyp3a4_veith', 'dili', 'herg', 'hia_hou', 'pgp_broccatelli', 'molecular_weight', 'formal_charge', 'clogp', 'heavy_atoms', 'h_bond_acceptors', 'h_bond_donor', 'rotatable_bonds', 'num_of_rings', 'molar_refractivity', 'number_of_atoms', 'topological_surface_area_mapping']
+Header row: ['smiles', 'id-num']
 
 [Ligand 1] Processing ID: 0
   SMILES: C1CCC(COc2c3c(nc[nH]3)nc(Nc3ccccc3)n2)CC1
@@ -335,7 +411,6 @@ Top 10 Best Binders:
       8         -8.160
 
 ✓ Processing complete!
-(vina) francesco@Mac TEST2 % 
 ```
 
 # Boltz
