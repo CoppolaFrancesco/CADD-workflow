@@ -62,7 +62,7 @@ cd Autodock-Vina/ligands
 python ligand-preparation.py
 ```
 
-This code adds a second column to the file, numbering the molecules from 0 to 300. The output will be saved as `list.csv`. In step 2, the code reads the SMILES strings from the `list.csv` file, adds hydrogens to the molecules, and generates different conformers using molscrub. Then, in step 3, Meeko will create the .pdbqt files for each ligand, saving the files according to their num-id. At the end, you should find the .sdf and .pdbqt files for each SMILES string in your `list.csv` file located in the ligands folder. This is the output of this command:
+This code adds a second column to the file, numbering the molecules from 0 to 300. The output will be saved as `list.csv`. In step 2, the code reads the SMILES strings from the `list.csv` file, adds hydrogens to the molecules, and generates different conformers using molscrub. Then, in step 3, Meeko will create the .pdbqt files for each ligand, saving the files according to their id-num. At the end, you should find the .sdf and .pdbqt files for each SMILES string in your `list.csv` file located in the ligands folder. This is the output of this command:
 
 ```
 (vina) francesco@Mac ligands % python ligands-preparation.py 
