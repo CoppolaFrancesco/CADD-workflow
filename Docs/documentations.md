@@ -15,16 +15,26 @@ In this document, we will execute each step manually, without relying on the aut
 
 ## Receptor Preparation
 
-In this demonstration, I will be using CDK2 as the target protein, which is represented by the PDB code 1H1Q. The PDB files typically contain many water molecules (some of which are important!!), cofactors, other proteins, and ligands. For now, for simplicity, we are going to take only the receptor. I suggest two approaches: one is to use [VMD](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD) or the PDB Reader & Manipulator in [CHARMM-GUI](https://www.charmm-gui.org/?doc=input/pdbreader). I'm currently using the second option, and in Step 1 of CHARMM-GUI, we will be prompted to select the chain we want to model. I selected to model only chain A (segid PROA). Step 2 is particularly important, as it allows us to manipulate the PDB file. We need to carefully consider the protonation states and any missing residues. Once we have completed these steps, we can download the PDB file. I have also included this file in the folder `Autodock-Vina/receptor/1H1Q-CHARMM-GUI.pdb`, along with the other generated files.
+In this demonstration, I will be using CDK2 as the target protein, which is represented by the PDB code 1H1Q. The PDB files typically contain many water molecules (some of which are important!!), cofactors, other proteins, and ligands. For now, for simplicity, we are going to take only the receptor. I suggest two approaches: one is to use [VMD](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD) or the PDB Reader & Manipulator in [CHARMM-GUI](https://www.charmm-gui.org/?doc=input/pdbreader). I'm currently using the second option, and in Step 1 of CHARMM-GUI, we will be prompted to select the chain we want to model. I selected to model only chain A (segid PROA). Step 2 is particularly important, as it allows us to manipulate the PDB file. We need to carefully consider the protonation states and any missing residues. Once we have completed these steps, we can download the PDB file. I have also included this file in the folder `Autodock-Vina/receptor/1H1Q-receptor-only.pdb`, along with the other generated files.
 
-We need to generate the PDBQT file for our receptor, which is a modified .pdb file that includes partial charges and atom types. 
-
-Using Meeko (which is already installed), we can generate the PDBQT file of our receptor along with the docking pocket box. I approximated the dimensions of the box based on the crystallographic structure of the complex with the ligand NU6094. This box will define the area for our docking search. 
+We need to generate the PDBQT file for our receptor, which is a modified .pdb file that includes partial charges and atom types. Using Meeko (which was already installed in the [introduction](../README.md)), we can generate the PDBQT file of our receptor along with the docking pocket box. I approximated the dimensions of the box based on the crystallographic structure of the complex with the ligand NU6094. This box will define the area for our docking search. 
 
 ```
-mk_prepare_receptor.py -i 1H1Q-CHARMM-GUI.pdb -o 1H1Q-prepared -p -v --box_size 20 20 20 --box_center 6.145 44.175 50.827 
+mk_prepare_receptor.py -i 1H1Q-receptor-only.pdb -o 1H1Q-prepared -p -v --box_size 20 20 20 --box_center 6.145 44.175 50.827 
 ```
-This command should now generate the following files 1H1Q-prepared.pdbqt, 1H1Q-prepared.box.txt and 1H1Q-prepared.box.pdb which concluded our receptor preparation.
+
+In my case, I plan to perform a semi-flexible docking where the receptor will remain completely frozen. If we wanted to conduct flexible docking, we would simply add the flag `-f A:83` to the previous command to make residue 83 of chain A flexible, for example. However, since we are using the crystallographic structure of the protein that is already bound to the inhibitor NU6094, I will keep both the pocket and the receptor frozen. Another reason to keep the pocket frozen is that my list of ligands is similar to NU6094. If we were using a wider variety of molecules with less similarity, it would likely be more beneficial to allow the pocket to be flexible. Finally, conducting a thorough literature review is essential to deciding how to proceed in this case. The conformational changes of the protein are also a crucial feature of our docking, especially when dealing with allosteric inhibitors.
+
+The previous command should now generate the following files `1H1Q-prepared.pdbqt`, `1H1Q-prepared.box.txt` and `1H1Q-prepared.box.pdb` and prints on our console:
+
+```
+@> 2388 atoms and 1 coordinate set(s) were parsed in 0.01s.
+
+Files written:
+  1H1Q-prepared.pdbqt <-- static (i.e., rigid) receptor input file
+1H1Q-prepared.box.txt <-- Vina-style box dimension file
+1H1Q-prepared.box.pdb <-- PDB file to visualize the grid box
+```
 
 ## Ligands Preparation
 
