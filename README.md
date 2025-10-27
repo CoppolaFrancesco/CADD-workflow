@@ -71,6 +71,8 @@ If everything has been installed correctly, we can now run the workflow by activ
 
 ```
 conda activate vina
+# Make sure .sh is executable
+chmod +x run-vina.sh
 ./run-vina.sh
 ```
 
@@ -80,6 +82,8 @@ Next, we can run the bash code for boltz and sort the best candidates (again, th
 
 ```
 conda activate boltz2
+# Make sure .sh is executable
+chmod +x run-boltz.sh
 ./run-boltz.sh
 ```
 
