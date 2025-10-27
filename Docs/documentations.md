@@ -1,5 +1,8 @@
+# Documentation
+
 ## Table of Contents
 * [Detailed Documentation](#detailed-documentation)
+* [Preparation](#preparation)
   * [Receptor Preparation](#receptor-preparation)
   * [Ligand Preparation](#ligands-preparation)
 * [AutoDock Vina](#autodock-vina)
@@ -7,6 +10,8 @@
 
 # Detailed Documentation
 In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock. Creating a separate block for this alternative during the design of the workflow provides several benefits, enhancing the overall flexibility of the workflow. Every step is also logged, and I will report in this documentation the outputs. 
+
+# Preparation
 
 ## Receptor Preparation
 
