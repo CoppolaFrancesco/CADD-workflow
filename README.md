@@ -2,9 +2,12 @@
 A fully automated workflow for Drug Discovery
 
 # Introduction
-I will write it later but VINA + BOLTZ2
+This workflow automates the process of screening multiple molecules against a specific protein target. Once the user selects the dataset of molecules and the receptor, two independent docking protocols will be executed: Vina docking and Boltz. A dedicated protocol will integrate the two docking results, and additional features will be added. In the end, the most suitable candidates are presented to the user. 
 
-# Environments
+All the outputs are provided for a dataset of ≈300 molecules for an alternative inhibitor of CDK2. There are two ways to utilize this workflow: one involves automated bash.sh commands for both Vina and Boltz, along with extracting several candidates with additional properties. The second would be to follow the documentation file and run each step separately to have precise control over each step. In both cases, the commands (.py or .sh) must be executed with a previously activated environment, as outlined below.  
+
+# Documentation
+# Environments and Installations
 
 I recommend separate environments, one for [AutoDock Vina ](https://autodock-vina.readthedocs.io/en/latest/installation.html#python-bindings-linux-and-mac-only) and one for [Boltz-2](https://github.com/forlilab/molscrub). 
 
