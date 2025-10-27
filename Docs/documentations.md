@@ -6,8 +6,13 @@
   * [Receptor Preparation](#receptor-preparation)
   * [Ligand Preparation](#ligands-preparation)
 * [AutoDock Vina](#autodock-vina)
-  * [Automatization](#automatization)
+  * [Automatization Vina](#automatization-vina)
 * [Boltz](#boltz)
+  * [Automatization Boltz](#automatization-boltz)
+* [Additional Properties](#additional-properties)
+  *[Sorting](#sorting)
+  *[RDKit](#rdkit)
+  *[DeepChem](#deepchem) 
 
 # Detailed Documentation
 In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock. Creating a separate block for this alternative during the design of the workflow provides several benefits, enhancing the overall flexibility of the workflow. Another interesting feature of this architecture is that it allows us to easily add a parallelization process in the future, where we can create and process a batch of several ligands on different devices without big modifications.
@@ -227,7 +232,7 @@ python ranking.py
 We will see a new file called `list_with_affinities.csv` in the folder `Autodock-Vina/poses/`.
 
 
-### Automatization
+### Automatization Vina
 To streamline the process, there is a bash script named `run-vina.sh`. Below is the log information generated during the script's execution.
 **Note: this is not the actual dataset utilized, but a small sample to illustrate the outputs.**
 
@@ -480,7 +485,7 @@ python boltz-prediction.py
 
 which, once again, will take the file with the docking scores from Vina's `list_with_affinities.csv` and it will update it with the Boltz predictions by adding new columns. In the new list, `list_with_affinities_boltz.csv`, we will also find the predictions converted in kcal/mol as explained in their [documentation](https://github.com/jwohlwend/boltz/blob/main/docs/prediction.md). So, in the new `list_with_affinities_boltz.csv` there will be the `smiles`, `id-num`, `vina_affinity`, `boltz_affinity_kcalmol`, `avg_affinity_pred_value` (which is the model output score), and finally the `avg_affinity_probability_binary`. 
 
-## Automatization boltz
+## Automatization Boltz
 
 Once again, we can avoid running all these steps individually by using the following commands:
 
@@ -493,3 +498,4 @@ chmod +x run-boltz.sh
 ./run-boltz.sh         
 ```
 
+# Additional Properties
