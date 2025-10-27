@@ -579,7 +579,7 @@ Finally, we can run the last file, `additional-descriptor.py`
 python additional-descriptor.py
 ```
 
-This file is going to create the final table `candidates.csv`. In this table, we will include many descriptors that can be extremely useful for understanding the final candidate molecules. 
+This file is going to create the final table `candidates.csv`. In this table, we will include many descriptors that can be extremely useful for understanding the final candidate molecules. While [DeepChem](https://deepchem.io/tutorials/the-basic-tools-of-the-deep-life-sciences/) is useful for predicting various ADMET properties, I will focus on RDKit properties instead. 
 
 Let's begin with the analysis of Lipinski's Rule of Five, which is a fundamental principle in drug discovery used to predict oral bioavailability based on four key molecular properties:
 
@@ -680,3 +680,5 @@ Processing molecule 10/10... (100%)
 
 ==================================================
 ```
+
+We should note that the ID number 0 corresponds to the original NU6094 molecule. Additionally, 9 out 10 of the candidates showed a high similarity to our custom kinase score, which is a positive indicator. Many of these candidates also demonstrated high hERG liability, poor solubility, and a moderate risk of inhibiting CYP3A4. It would be better to evaluate these values using more sophisticated algorithms or by checking in the literature.
