@@ -25,8 +25,12 @@ $ pip install vina
 For Bolz-2: 
 
 ```
-$ conda create boltz_conda
-$ conda activate boltz_conda
+# Create a new environment for Boltz-2
+conda create -n boltz2 python=3.11 -y
+conda activate boltz2
+
+# Install Boltz-2
+pip install boltz
 ```
 
 Now you can just download and install it. In my case, I don't have a dedicated GPU and I will run everything on the CPU 
