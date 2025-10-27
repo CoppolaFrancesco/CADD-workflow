@@ -599,6 +599,84 @@ The QED (Quantitative Estimation of Drug-likeness) score offers a more detailed 
 
 These features are added with the following names in the candidates list: `qed_score` and	`qed_classification`.
 
-The Topological Polar Surface Area (TPSA) measures the surface area occupied by polar atoms (oxygen and nitrogen) and their attached hydrogens. This descriptor strongly correlates with membrane permeability and blood-brain barrier penetration. For oral drugs the range should be around 40-100 A^2. Values below 40 A^2 indicate excessive lipophilicity (poor solubility, off-target effects). Values above 100 A^2 suggest poor membrane permeability. 
+I think valuable insights can be gained from other CDK2 inhibitors or approved compounds to better understand and assess our candidates. The Topological Polar Surface Area (TPSA) quantifies the surface area occupied by polar atoms, such as oxygen and nitrogen, and their associated hydrogens. This descriptor is closely linked with membrane permeability and the ability to penetrate the blood-brain barrier. For oral drugs, the optimal range is approximately 40-100 A². Values below 40 A² indicate excessive lipophilicity, which leads to poor solubility and off-target effects. Values above 100 A² suggest insufficient membrane permeability. An analysis of approved kinase drugs indicates that having 2 to 4 aromatic rings generally provides good binding affinity while maintaining acceptable physicochemical properties. Fewer rings tend to compromise both specificity and affinity, while more rings increase lipophilicity and decrease solubility. Additionally, the presence of heteroatoms appears to be a standard feature among many candidates, particularly the conserved backbone NH and CO groups. The fraction of sp³ carbons (Fsp³) measures the molecular three-dimensionality; typically, kinase inhibitors display small values, while larger values (greater than 0.4) suggest a more complex architecture. Molar refractivity can also provide insight into how well the molecules will fill the binding pocket and interact with hydrophobic residues. 
 
-The ATP binding pocket of kinases contains aromatic residues that engage in π-π stacking interactions with inhibitors.
+A custom score can be built based on the literature information about other successful CDK2 inhibitors. Where 2 points can be given for molecular weight between 300-500 Da, 2 points if the aromatic rings are 2 to 4, 2 points if the TPSA is around 40-100 A², 2 points if the H-Bond Donors are 1-4, 2 points for acceptors 3-7, and only 1 point if rotatable bonds are 2-6. A score of 8 points indicates compounds resembling known CDK2 inhibitors. Like this table, many other scores can be developed through literature reading. 
+
+Synthetic Accessibility Score, in this case a simplified version based on structural complexity metrics, can also be an interesting information. 
+
+We can also calculate ADMET properties using simple heuristic rules for solubility, blood-brain barrier permeability, CYP3A4 and hERG liability, and clearance prediction. 
+
+The final output will show us:
+
+```
+📄 Loaded 10 molecules from list-best10.csv
+
+🔬 Analyzing 10 molecules...
+
+Processing molecule 1/10... (10%)
+Processing molecule 2/10... (20%)
+Processing molecule 3/10... (30%)
+Processing molecule 4/10... (40%)
+Processing molecule 5/10... (50%)
+Processing molecule 6/10... (60%)
+Processing molecule 7/10... (70%)
+Processing molecule 8/10... (80%)
+Processing molecule 9/10... (90%)
+Processing molecule 10/10... (100%)
+
+✅ Saved 10 candidates to 'candidates.csv'
+
+📊 Property Categories Added:
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🔹 Lipinski Properties:
+      • molecular_weight, logP, H-donors/acceptors
+      • rotatable_bonds, violations, pass/fail
+
+   🔹 Drug-likeness:
+      • qed_score, qed_classification
+
+   🔹 Kinase-Specific Properties:
+      • TPSA (polar surface area)
+      • aromatic_rings (ATP pocket binding)
+      • heteroatoms (hinge H-bonding)
+      • ring counts, Fsp3
+      • molar_refractivity
+      • kinase_score (custom scoring)
+
+   🔹 Additional Descriptors:
+      • stereo_centers, formal_charge
+      • structural complexity indices
+
+==================================================
+                 ANALYSIS SUMMARY                 
+==================================================
+
+🎯 Drug-likeness:
+   Lipinski pass: 10/10
+   Average QED: 0.528
+   QED ≥ 0.7 (Excellent): 1/10
+
+🧬 Kinase-Specific Metrics:
+   Avg aromatic rings: 3.4
+   Avg TPSA: 88.0 Ų
+   TPSA in ideal range (40-100): 7/10
+   Avg kinase score: 10.1/11
+   High kinase score (≥8): 9/10
+
+📋 Top 3 candidates by kinase score:
+
+   ID: 0
+      Kinase score: 11, QED: 0.740
+      TPSA: 75.7, Aromatic rings: 3
+
+   ID: 25
+      Kinase score: 11, QED: 0.465
+      TPSA: 78.5, Aromatic rings: 4
+
+   ID: 125
+      Kinase score: 11, QED: 0.530
+      TPSA: 78.5, Aromatic rings: 3
+
+==================================================
+```
