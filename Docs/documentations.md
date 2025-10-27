@@ -233,8 +233,10 @@ To streamline the process, `Autodock-Vina` includes a bash script named `run-vin
 
 ```
 # Make sure you are in the vina environment
-(base) francesco@Mac % conda activate vina
-(vina) francesco@Mac % ./run-vina.sh 
+conda activate vina
+# Make sure that the .sh file is executable
+chmod +x run-vina.sh
+./run-vina.sh 
 ======================================================================
 STEP 1: Looking for cheese*.csv file to create list.csv
 ======================================================================
@@ -416,9 +418,17 @@ Top 10 Best Binders:
 
 # Boltz
 
-Now you can navigate in boltz folder where again you can find the `boltz-processing.py` file that can run all the files for you. Otherwise, you can manually go over each of them. 
+We can now navigate to the `boltz/` folder, where the `boltz-processing.py` file is located. 
 
-The `processing.py` will place in the `boltz-configuration-files` folder the .yaml files, where we define how we want to run the prediction. Specifically, this file will open `Autodock-Vina/ligands/list.csv`, which contains the ligands, and extract the SMILES strings. For each SMILES string, it will generate a file named `0.yaml`, `1.yaml`, and so on. In these files, we specify that we will calculate the affinity using the Boltz-2 method, and we have constrained the binding within the pocket where residues 83 and 134 point into the cavity. 
+```
+# Make sure you are now in boltz-2 environment
+conda activate boltz2
+python boltz-processing.py              
+```
+
+This file can create and run all the other necessary files for us. Alternatively, we can choose to go through each file manually. For each smile, we need to create a .yaml configuration file and then execute it. The `processing.py` script will create .yaml files in the `boltz-configuration-files` folder, where we define the parameters for running the prediction. Specifically, this script will open the file `Autodock-Vina/ligands/list.csv`, which contains the ligands and extracts their SMILES strings. For each SMILES string, it will generate a file named `0.yaml`, `1.yaml`, and so on. In these files, we specify that we will calculate the affinity using the Boltz-2 method, and we have constrained the binding to the pocket where residues 83 and 134 point into the cavity. 
+
+The configuration `0.yaml` looks like this:
 
 ```
 version: 1  # Optional, defaults to 1
@@ -438,14 +448,13 @@ constraints:
       contacts: [ [ A, 83 ], [ A, 134 ] ]
 ```
 
-After generating this file, the `boltz-processing.py` will run the prediction as following:
+After generating this file, the `boltz-processing.py` will run the prediction as follows:
 
 ```
-$ boltz predict boltz-configuration-files/0.yaml --use_msa_server --out_dir boltz-results --recycling_steps 1 --sampling_steps 50 --diffusion_samples 3 --step_scale 1.2
-                
+boltz predict boltz-configuration-files/0.yaml --use_msa_server --out_dir boltz-results --recycling_steps 1 --sampling_steps 50 --diffusion_samples 3 --step_scale 1.2             
 ```
 
-For each smile, it will generate a prediction that can be found in boltz-results/boltz-results_0/predictions/0/affinity.json, which looks like this:
+For each smile, it will generate a prediction that can be found in `boltz-results/boltz-results_0/predictions/0/affinity.json`, which looks like this:
 
 ```
 {
@@ -455,8 +464,27 @@ For each smile, it will generate a prediction that can be found in boltz-results
     "affinity_probability_binary1": 0.7879448533058167,
     "affinity_pred_value2": -0.6588712334632874,
     "affinity_probability_binary2": 0.8144103288650513
-}
-                
+}             
 ```
 
-Once all the ligands are done, you can run the 'boltz-processing.py' file, which, once again, will take the file with the docking scores from Vina (list_with_affinities.csv) and it will update it with the Boltz prediction by adding another column. In the new list, list_with_affinities_boltz.csv, you will find the prediction already converted in kcal/mol as explained in their [documentation](https://github.com/jwohlwend/boltz/blob/main/docs/prediction.md).
+Once all the ligands are done, you can run the 'boltz-prediction.py' file, 
+
+```
+python boltz-prediction.py           
+```
+
+which, once again, will take the file with the docking scores from Vina's `list_with_affinities.csv` and it will update it with the Boltz predictions by adding new columns. In the new list, `list_with_affinities_boltz.csv`, we will also find the predictions converted in kcal/mol as explained in their [documentation](https://github.com/jwohlwend/boltz/blob/main/docs/prediction.md). So, in the new `list_with_affinities_boltz.csv` there will be the `smiles`, `id-num`, `vina_affinity`, `boltz_affinity_kcalmol`, `avg_affinity_pred_value` (which is the model output score), and finally the `avg_affinity_probability_binary`. 
+
+## Automatization boltz
+
+Once again, we can avoid running all these steps individually by using the following commands:
+
+```
+# Make sure you are now in boltz-2 environment
+conda activate boltz2
+
+# Make sure that the .sh file is executable
+chmod +x run-boltz.sh
+./run-boltz.sh         
+```
+
