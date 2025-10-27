@@ -2,7 +2,7 @@
 
 ## Table of Contents
 * [Detailed Documentation](#detailed-documentation)
-* [Preparation](#preparation)
+* [Files Preparation](#files-preparation)
   * [Receptor Preparation](#receptor-preparation)
   * [Ligand Preparation](#ligands-preparation)
 * [AutoDock Vina](#autodock-vina)
@@ -11,11 +11,11 @@
 # Detailed Documentation
 In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock. Creating a separate block for this alternative during the design of the workflow provides several benefits, enhancing the overall flexibility of the workflow. Every step is also logged, and I will report in this documentation the outputs. 
 
-# Preparation
+# Files Preparation
 
 ## Receptor Preparation
 
-In this demonstration, I will be using CDK2, which is represented by the PDB code 1H1Q. The PDB files typically contain many water molecules (some of which are important!!), cofactors, other proteins, and ligands. For now, for simplicity, we are going to take only the receptor. I suggest two approaches: one is to use [VMD](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD) or the PDB Reader & Manipulator in [CHARMM-GUI](https://www.charmm-gui.org/?doc=input/pdbreader). In Step 1, you will be prompted to select the chain you want to model; in my case, I chose chain A (segid PROA). Step 2 is particularly important, as it allows us to manipulate the PDB file. We need to carefully consider the protonation states and any missing residues. Once we have completed these steps, we can download the PDB file. I have also included this file in the folder `Autodock-Vina/receptor/1H1Q-CHARMM-GUI.pdb`, along with the other generated files.
+In this demonstration, I will be using CDK2 as the target protein, which is represented by the PDB code 1H1Q. The PDB files typically contain many water molecules (some of which are important!!), cofactors, other proteins, and ligands. For now, for simplicity, we are going to take only the receptor. I suggest two approaches: one is to use [VMD](https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD) or the PDB Reader & Manipulator in [CHARMM-GUI](https://www.charmm-gui.org/?doc=input/pdbreader). I'm currently using the second option, and in Step 1 of CHARMM-GUI, we will be prompted to select the chain we want to model. I selected to model only chain A (segid PROA). Step 2 is particularly important, as it allows us to manipulate the PDB file. We need to carefully consider the protonation states and any missing residues. Once we have completed these steps, we can download the PDB file. I have also included this file in the folder `Autodock-Vina/receptor/1H1Q-CHARMM-GUI.pdb`, along with the other generated files.
 
 We need to generate the PDBQT file for our receptor, which is a modified .pdb file that includes partial charges and atom types. 
 
