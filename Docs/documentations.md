@@ -11,8 +11,7 @@
   * [Automatization Boltz](#automatization-boltz)
 * [Additional Properties](#additional-properties)
   * [Sorting](#sorting)
-  * [RDKit](#rdkit)
-  * [DeepChem](#deepchem) 
+  * [RDKit and DeepChem](#rdkit-and-deepchem)
 
 # Detailed Documentation
 In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock. Creating a separate block for this alternative during the design of the workflow provides several benefits, enhancing the overall flexibility of the workflow. Another interesting feature of this architecture is that it allows us to easily add a parallelization process in the future, where we can create and process a batch of several ligands on different devices without big modifications.
@@ -499,3 +498,85 @@ chmod +x run-boltz.sh
 ```
 
 # Additional Properties
+
+## Sorting
+
+We need to rank the molecules based on their predicted binding energies. Since the scales of the predicted values for Vina and Boltz are similar but with opposite signs, I will calculate an average using the formula `average = (Vina score - Boltz score) / 2`. Alternatively, we could normalize the values and compute the average based on their scales using the formula `average = max model score / (max score - min score)` or any other custom formula. Here I will use the first one, not considering in this sorting the boltz `avg_affinity_probability_binary`.
+
+```
+# Make sure you are now in deepchem environment
+conda activate deepchem-env
+python sorting.py
+```
+
+The file `sorting.py` will generate the following output:
+
+```
+Total molecules: 297
+Molecules with Vina affinity: 297
+Molecules with Boltz affinity: 291
+Molecules with both affinities: 291
+
+✓ Saved sorted list with 297 molecules to 'list-sorted.csv'
+✓ Saved top 10 molecules to 'list-best10.csv'
+
+=== DATA RANGES ===
+Vina affinity range: -10.470 to -6.180
+Boltz affinity range: 5.254 to 9.476
+
+=== SORTING FORMULA EXPLANATION ===
+SIMPLE AVERAGING METHOD:
+
+1. Vina affinity: More negative = better binding (e.g., -9.5 is better than -8.0)
+2. Boltz affinity: Higher values = better binding (e.g., 8.0 is better than 6.5)
+
+3. Combined score formula:
+   combined_score = (vina_affinity - boltz_affinity_kcalmol) / 2
+
+   Why subtract Boltz?
+   - We want to reward LOW vina (e.g., -9.5)
+   - We want to reward HIGH boltz (e.g., 8.0)
+   - Subtracting high boltz makes the score MORE negative (better)
+
+   Example:
+   - Molecule A: Vina=-9.5, Boltz=8.0 → Score=(-9.5-8.0)/2 = -8.75
+   - Molecule B: Vina=-8.0, Boltz=6.5 → Score=(-8.0-6.5)/2 = -7.25
+   - Molecule A wins (more negative score)
+
+4. Molecules are sorted by combined score (most negative = best)
+5. Molecules missing either value are placed at the end
+
+=== TOP 10 MOLECULES ===
+                                          smiles  id-num  vina_affinity  boltz_affinity_kcalmol  avg_affinity_pred_value  avg_affinity_probability_binary
+0      C1CCC(COc2c3c(nc[nH]3)nc(Nc3ccccc3)n2)CC1       0         -9.723                9.070276                -0.649762                         0.801178
+1  c1ccc(CNc2nc(Nc3cc(C4CC4)[nH]n3)c3sccc3n2)cc1      25         -9.314                9.088149                -0.662866                         0.722170
+2      COc1ccc(Nc2nc(NCc3cccnc3)nc3[nH]ncc23)cc1     269         -9.008                8.851198                -0.489148                         0.593732
+3       Cn1ncc2c(Nc3cc(Cl)ccc3O)nc(NCCCNC=O)nc21      50         -8.790                9.054088                -0.637894                         0.450187
+4     NC(=O)c1ccc(Nc2nc(NCC3CCCO3)c3ccccc3n2)cc1      33         -9.701                7.928586                 0.187254                         0.410534
+5    Clc1ccc(Nc2nc(NCCC3=CCCCC3)nc3[nH]cnc23)cc1     125         -9.762                7.752512                 0.316340                         0.551613
+6        Cc1ccc(Nc2nc(NCCc3ccccc3)nc3nccnc23)cc1     174         -9.970                7.465778                 0.526556                         0.465921
+7          CCCCNc1nc(Nc2cc(Cl)ccc2O)c2cnn(C)c2n1      56         -8.543                8.811897                -0.460335                         0.402390
+8       CC(C)CCNc1nc(Nc2ccc(F)cc2Cl)c2cnn(C)c2n1     116         -9.512                7.841735                 0.250927                         0.225434
+9       CCCCNc1nc(Nc2ccc3nc[nH]c3c2)c2cnn(C)c2n1      27         -8.705                8.642884                -0.336425                         0.268122
+
+=== STATISTICS OF TOP 10 ===
+Total molecules with both affinities: 291
+Best combined score: -9.397
+10th best combined score: -8.674
+Average Vina in top 10: -9.303
+Average Boltz in top 10: 8.451
+Average pred_value in top 10: -0.196
+Average probability in top 10: 0.489
+```
+
+We will now have a file named `list-sorted.csv`, where all the ligands are ranked based on the average binding energies from the models. Additionally, there is a file called `list-best10.csv` containing the top 10 molecules based on this averaging. 
+
+## RDKit and DeepChem
+
+Finally, we can run the last file, `additional-descriptor.py`
+
+```
+python additional-descriptor.py
+```
+
+This file is going
