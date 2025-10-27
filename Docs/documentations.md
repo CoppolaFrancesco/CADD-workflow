@@ -6,6 +6,7 @@
   * [Receptor Preparation](#receptor-preparation)
   * [Ligand Preparation](#ligands-preparation)
 * [AutoDock Vina](#autodock-vina)
+  * [Automatization](#automatization)
 * [Boltz](#boltz)
 
 # Detailed Documentation
@@ -226,7 +227,7 @@ python ranking.py
 We will see a new file called `list_with_affinities.csv` in the folder `Autodock-Vina/poses/`.
 
 
-### run-vina.sh automatization
+### Automatization
 To streamline the process, `Autodock-Vina` includes a bash script named `run-vina.sh`. Below is the log information generated during the script's execution.
 **Note: this is not the actual dataset utilized, but a small sample to illustrate the outputs.**
 
