@@ -10,9 +10,9 @@
 * [Boltz](#boltz)
   * [Automatization Boltz](#automatization-boltz)
 * [Additional Properties](#additional-properties)
-  *[Sorting](#sorting)
-  *[RDKit](#rdkit)
-  *[DeepChem](#deepchem) 
+  * [Sorting](#sorting)
+  * [RDKit](#rdkit)
+  * [DeepChem](#deepchem) 
 
 # Detailed Documentation
 In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock. Creating a separate block for this alternative during the design of the workflow provides several benefits, enhancing the overall flexibility of the workflow. Another interesting feature of this architecture is that it allows us to easily add a parallelization process in the future, where we can create and process a batch of several ligands on different devices without big modifications.
