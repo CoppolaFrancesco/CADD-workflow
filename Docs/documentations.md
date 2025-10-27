@@ -81,7 +81,7 @@ STEP 2: Ligand Preparation Pipeline
 
 --- Starting Ligand Preparation Pipeline for: ./list.csv ---
 
-Header row: ['smiles', 'id-num', 'id', 'database', 'db_id', 'similarity', 'caco2_wang', 'clearance_hepatocyte_az', 'clearance_microsome_az', 'half_life_obach', 'ld50_zhu', 'lipophilicity_astrazeneca', 'ppbr_az', 'solubility_aqsoldb', 'vdss_lombardo', 'ames', 'bbb_martins', 'bioavailability_ma', 'cyp2c9_substrate_carbonmangels', 'cyp2c9_veith', 'cyp2d6_substrate_carbonmangels', 'cyp2d6_veith', 'cyp3a4_substrate_carbonmangels', 'cyp3a4_veith', 'dili', 'herg', 'hia_hou', 'pgp_broccatelli', 'molecular_weight', 'formal_charge', 'clogp', 'heavy_atoms', 'h_bond_acceptors', 'h_bond_donor', 'rotatable_bonds', 'num_of_rings', 'molar_refractivity', 'number_of_atoms', 'topological_surface_area_mapping']
+Header row: ['smiles', 'id-num']
 
 [Ligand 1] Processing ID: 0
   SMILES: C1CCC(COc2c3c(nc[nH]3)nc(Nc3ccccc3)n2)CC1
