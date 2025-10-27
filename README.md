@@ -33,13 +33,8 @@ conda activate boltz2
 pip install boltz
 ```
 
-Now you can just download and install it. In my case, I don't have a dedicated GPU and I will run everything on the CPU 
+In my case, I don't have a dedicated GPU, and I will run everything on the CPU.
 
-```
-git clone https://github.com/jwohlwend/boltz.git
-cd boltz
-pip install -e .
-```
 
 # Receptor preparation
 
