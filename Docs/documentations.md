@@ -236,7 +236,12 @@ To streamline the process, `Autodock-Vina` includes a bash script named `run-vin
 conda activate vina
 # Make sure that the .sh file is executable
 chmod +x run-vina.sh
-./run-vina.sh 
+./run-vina.sh
+```
+
+The output will look like this:
+
+```
 ======================================================================
 STEP 1: Looking for cheese*.csv file to create list.csv
 ======================================================================
