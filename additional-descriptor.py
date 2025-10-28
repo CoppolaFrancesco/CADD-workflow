@@ -522,7 +522,7 @@ print(f"   QED ≥ 0.7 (Excellent): {(df_qed['qed_score'] >= 0.7).sum()}/{len(df
 
 print(f"\n🧬 Kinase-Specific Metrics:")
 print(f"   Avg aromatic rings: {df_kinase['num_aromatic_rings'].mean():.1f}")
-print(f"   Avg TPSA: {df_kinase['tpsa'].mean():.1f} Ų")
+print(f"   Avg TPSA: {df_kinase['tpsa'].mean():.1f} A")
 print(f"   TPSA in ideal range (40-100): {((df_kinase['tpsa'] >= 40) & (df_kinase['tpsa'] <= 100)).sum()}/{len(df_candidates)}")
 print(f"   Avg kinase score: {df_kinase['kinase_score'].mean():.1f}/11")
 print(f"   High kinase score (≥8): {(df_kinase['kinase_score'] >= 8).sum()}/{len(df_candidates)}")
