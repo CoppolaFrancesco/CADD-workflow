@@ -17,7 +17,7 @@
 * [Experimental studies](#experimental-studies)
 
 # Detailed Documentation
-In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock. Creating a separate block for this alternative during the design of the workflow provides several benefits, enhancing the overall flexibility of the workflow. Another interesting feature of this architecture is that it allows us to easily add a parallelization process in the future, where we can create and process a batch of several ligands on different devices without big modifications.
+In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock with an interactive shell script. Creating separate blocks for this workflow provides several benefits, enhancing the overall flexibility without compromising the speed or the final consolidation. Another interesting feature of this architecture is that it allows us to easily add a parallelization process in the future, where we can create and process a batch of several ligands on different devices without big modifications to the code.
 
 Every step is logged, and I will report in this documentation the outputs. 
 
@@ -50,7 +50,7 @@ Files written:
 
 ## Ligands Preparation
 
-For the dataset preparation, I used the [cheese search](https://cheese.deepmedchem.com/). Specifically, by searching exclusively in the Mcule Full database, using a method known as [Shape: 3D volume overlap](https://chemrxiv.org/engage/chemrxiv/article-details/67250915f9980725cfcd1f6f). In the dataset, I aimed to include a few analogs of the ligand (NU6094) as well as a range of diverse compounds with different structural similarities and numbers of rotatable bonds. I selected approximately 300 molecules and exported them as a CSV file. The CSV file is structured so that the first column contains the SMILES representation. We need to review each smile, add the hydrogens using Molscrub, save the result as a .sdf file, and then generate .pdbqt files with Meeko. 
+For the dataset preparation, I used the [cheese search](https://cheese.deepmedchem.com/). Specifically, by searching exclusively in the Mcule Full database, using a method known as [Shape: 3D volume overlap](https://chemrxiv.org/engage/chemrxiv/article-details/67250915f9980725cfcd1f6f). In the dataset, I aimed to include a few analogs of the ligand (NU6094) as well as a range of diverse compounds with different structural similarities and numbers of rotatable bonds. I selected approximately 300 molecules and exported them as a CSV file called `cheese-full-list-mcule.csv`. The CSV file is structured so that the first column contains the SMILES representation. We need to review each smile, add the hydrogens using Molscrub, save the result as a .sdf file, and then generate .pdbqt files with Meeko. 
 
 These are the two ideally steps that one should run:
 
@@ -61,7 +61,7 @@ scrub.py "smile 1" -o 0-prepared.sdf
 mk_prepare_ligand.py -i 0-prepared.sdf -o 0-prepared.pdbqt
 ```
 
-However, in the folder `Autodock-Vina/ligands`, you will find a file named `ligand-preparation.py` which automatically performs all these iterations for you.
+However, in the folder `Autodock-Vina/ligands`, you will find a file named `ligand-preparation.py` which automatically performs all these iterations for you (make sure that the .csv list of your molecules is stored with the cheese word in front, `cheese*.csv`).
 
 ```
 # make sure you are in the vina environment
@@ -70,7 +70,7 @@ cd Autodock-Vina/ligands
 python ligand-preparation.py
 ```
 
-This code adds a second column to the file, numbering the molecules from 0 to 300. The output will be saved as `list.csv`. In step 2, the code reads the SMILES strings from the `list.csv` file, adds hydrogens to the molecules, and generates different conformers using molscrub. Then, in step 3, Meeko will create the .pdbqt files for each ligand, saving the files according to their id-num. At the end, you should find the .sdf and .pdbqt files for each SMILES string in your `list.csv` file located in the ligands folder. This is the output of this command:
+This code adds a second column to the file, numbering the molecules from 0 to 300. The output will be saved as `list.csv`. In step 2, the code reads the SMILES strings from the `list.csv` file, adds hydrogens to the molecules, and generates different conformers using molscrub. Then, in step 3, Meeko will create the .pdbqt files for each ligand, saving the files according to their id-num. At the end, you should find the .sdf and .pdbqt files for each SMILES string in your `list.csv` file located in the `Autodock-Vina/ligands` folder. This is the output of this command:
 
 ```
 (vina) francesco@Mac ligands % python ligands-preparation.py 
@@ -162,7 +162,7 @@ This command will perform docking for each ligand sequentially, using the follow
 vina --receptor receptor/1H1Q-receptor.pdbqt --ligand ligands/0-prepared.pdbqt --config receptor/1H1Q-receptor.box.txt --exhaustiveness 100 --out poses/0-vina-out.pdbqt --num_modes 20
 ```
 
-Instead of using the Python script `vina-batch.py`, you can also use the `--batch` flag when executing the vina command. However, I prefer to maintain more control over the order of operations and outputs. By using `vina-batch.py`, you will find both the .pdbqt files and the individual docking output files (such as `in-num docking output.txt`) in the `poses` folder. For example, for id-num 0 in `poses/`, we can find the files `0-vina-out.pdbqt` and `0-vina-score.txt`, which look like this:
+Instead of using the Python script `vina-batch.py`, you can also use the `--batch` flag when executing the vina command. However, I prefer to maintain more control over the order of operations and outputs. By using `vina-batch.py`, you will find both the final best poses (*-vina-out.pdbqt) files and the individual docking output files (such as `*-vina-score.txt`) in the `poses` folder. For example, for id-num 0 in `poses/`, we can find the files `0-vina-out.pdbqt` and `0-vina-score.txt`, which look like this:
 
 ```
 AutoDock Vina v1.2.5
