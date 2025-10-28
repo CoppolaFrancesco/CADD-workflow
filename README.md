@@ -18,7 +18,7 @@ All the outputs are provided for a dataset of ≈300 molecules for an alternativ
 
 # Environments and Installations
 
-I recommend separate environments for the 3 steps: [AutoDock Vina](https://autodock-vina.readthedocs.io/en/latest/installation.html#python-bindings-linux-and-mac-only), [Boltz-2](https://github.com/forlilab/molscrub), and the additional features. The reason is that they might have conflicts in the same environment, and this also allows us to have more control in each step of this workflow. In the future, we may have a single environment and a more harmonized workflow structure. 
+I recommend separate environments for the 3 steps: [AutoDock Vina](https://autodock-vina.readthedocs.io/en/latest/installation.html#python-bindings-linux-and-mac-only), [Boltz-2](https://github.com/forlilab/molscrub), and the additional properties calculation. Conflicts may arise if they are installed in the same environment, as different versions of packages might be required. This separation also allows us to have more control in each step of this workflow. In the future, we may have a single environment and a more harmonized workflow structure. 
 
 ## Autodock-Vina
 
