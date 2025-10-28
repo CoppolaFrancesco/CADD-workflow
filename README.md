@@ -85,9 +85,9 @@ chmod +x run-vina.sh
 ./run-vina.sh
 ```
 
-At the end, inside the `Autodock-Vina/poses`, you will find the dataset with the vina scores `list_with_affinities.csv`. 
+At the end, inside the `Autodock-Vina/poses` folder, you will find the dataset with the vina scores `list_with_affinities.csv`. 
 
-Next, we can run the bash code for boltz and sort the best candidates (again, this can also be run as single step by following the [Docs/documentations.md](Docs/documentations.md)):
+Next, we can run the bash code for `boltz` and sort the best candidates (again, this can also be run as single steps by following the [documentations](Docs/documentations.md):
 
 ```
 conda activate boltz2
@@ -96,11 +96,9 @@ chmod +x run-boltz.sh
 ./run-boltz.sh
 ```
 
-At the end, we will see in the main boltz folder the file `list_with_affinities_boltz.csv`.
+At the end, we will see in the main `boltz/` folder the file `list_with_affinities_boltz.csv`.
 
-'list-sorted.csv' and `list-best10.csv`. In this case, the sorting is based on the average binding energy obtained by both methods. 
-
-Finally, we can run DeepChem and RDKit for sorting the molecules and the additional properties calculation
+We can now run the `sorting.py` and `additional-descriptors.py` files to rank the molecules and calculate additional properties using DeepChem and RDKit.
 
 ```
 conda activate deepchem_env
@@ -108,5 +106,4 @@ python sorting.py
 python additional-descriptors.py
 ```
 
-Now we should see the full list of candidates ordered by the average binding energy obtained by both docking methods `list-sorted.csv`, the best `list-best10.csv`, and `candidates.csv` with feature extractions. The console should also print you the final results.
-
+Now we should see the full list of candidates ordered by the average binding energy obtained by both docking methods `list-sorted.csv`, the best `list-best10.csv`, and `candidates.csv` with feature extractions. The console should print the final results, and the tables are provided in the main folder. 
