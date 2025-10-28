@@ -438,7 +438,7 @@ conda activate boltz2
 python boltz-processing.py              
 ```
 
-This file can create and run all the other necessary files for us. Alternatively, we can choose to go through each file manually. For each smile, we need to create a .yaml configuration file and then execute it. The `processing.py` script will create .yaml files in the `boltz-configuration-files` folder, where we define the parameters for running the prediction. Specifically, this script will open the file `Autodock-Vina/ligands/list.csv`, which contains the ligands and extracts their SMILES strings. For each SMILES string, it will generate a file named `0.yaml`, `1.yaml`, and so on. In these files, we specify that we will calculate the affinity using the Boltz-2 method, and we have constrained the binding to the pocket where residues 83 and 134 point into the cavity. 
+This file can create and run all the other necessary files for us. Alternatively, we can choose to go through each file manually. For each smile, we need to create a .yaml configuration file and then execute it. The `processing.py` script will create .yaml files in the `boltz-configuration-files` folder, where we define the parameters for running the prediction. Specifically, this script will open the file `Autodock-Vina/ligands/list.csv`, which contains the ligands and extracts their SMILES strings. For each SMILES string, it will generate a file named `0.yaml`, `1.yaml`, and so on. In these files, we specify that we will calculate affinity using the Boltz-2 method. We have constrained the docking in the pocket by selecting residues 83 and 134, which point into the cavity. 
 
 The configuration `0.yaml` looks like this:
 
@@ -608,7 +608,7 @@ A custom score can be built based on the literature information about other succ
 
 Synthetic Accessibility Score, in this case a simplified version based on structural complexity metrics, can also be an interesting information. 
 
-We can also calculate ADMET properties using simple heuristic rules for solubility, blood-brain barrier permeability, CYP3A4 and hERG liability, and clearance prediction. 
+We can also calculate ADMET properties using simple heuristic rules for solubility, blood-brain barrier permeability, CYP3A4 and hERG liability, and clearance prediction (but it would be better to use DeepChem to predict them or look at available data online). 
 
 The final output will show us:
 
