@@ -1,5 +1,5 @@
 # Vina-Boltz-workflow
-A fully automated workflow for computer-aided drug discovery (CADD). This workflow was generated with the AI assistance of Claude 4 Sonnet (Anthropic, 2025). Parallel docking with AutoDock Vina and Boltz is employed to predict potential drug candidates.
+A fully automated workflow for computer-aided drug discovery (CADD). This workflow was generated with the AI assistance of Claude 4.5 Sonnet (Anthropic, 2025). Parallel docking with AutoDock Vina and Boltz is employed to predict potential drug candidates.
 
 # Introduction
 This workflow automates the process of screening multiple molecules (stored as SMILES in a .csv file) against a specific protein target. Once the user selects the dataset of molecules and the receptor, two independent docking protocols will be executed: Vina docking and Boltz. A dedicated protocol will merge the two docking results, and additional features will be added. In the end, the most suitable candidates are presented to the user. 
