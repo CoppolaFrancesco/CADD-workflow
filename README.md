@@ -74,7 +74,7 @@ pip install deepchem
 
 # Running the workflow
 
-Before running the workflow, we must prepare the ligands (SMILES format stored in a .csv file) and the receptor files (see [Docs/documentations.md](Docs/documentations.md)). For simplicity, I'm already providing them in the `Autodock-Vina/ligands` and `Autodock-Vina/receptor`. Each step includes dedicated logging, and examples can be found in the documentation. 
+Before running the workflow, we must prepare the ligands (SMILES format stored in a .csv file) and the receptor files (see [Docs/documentations.md](Docs/documentations.md)). For simplicity, I'm already providing them in the `Autodock-Vina/ligands` and `Autodock-Vina/receptor`. Each step includes dedicated printing about the status of the step, and examples can be found in the documentation.
 
 If everything has been installed correctly, we can now run the workflow by activating the environment and executing the following command:
 
