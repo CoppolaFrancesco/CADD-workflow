@@ -106,4 +106,6 @@ python sorting.py
 python additional-descriptors.py
 ```
 
-Now we should see the full list of candidates ordered by the average binding energy obtained by both docking methods `list-sorted.csv`, the best `list-best10.csv`, and `candidates.csv` with feature extractions. The console should print the final results, and the tables are provided in the main folder. 
+Now we should see the full list of candidates ordered by the average binding energy obtained by both docking methods `list-sorted.csv`, the best `list-best10.csv`, and `candidates.csv` with feature extractions. 
+
+The console should display the final results, and the final tables are available in the main folder for reference.
