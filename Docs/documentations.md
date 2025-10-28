@@ -706,9 +706,9 @@ We should note that the ID number 0 corresponds to the original NU6094 molecule.
 
 # Limitations and Future Improvements
 
-This workflow seems capable of identifying possible alternative candidates, as demonstrated by the presence of NU6094 in the final candidates list. However, different aspects can be improved:
+This workflow appears capable of identifying possible candidates, as shown by the inclusion of NU6094 in the final candidates list. However, various aspects could be improved to enhance performance in large-scale CADD workflows:
 
-*  Richer (more diverse in similarity) and larger dataset. It is also possible to have other approved or known ligands as a benchmark (Their ranking during the prediction can serve as a workflow performance evaluation). 
+*  Richer (more diverse in similarity) and larger dataset. It is also possible to have other approved or known ligands as a benchmark (their ranking during the prediction can serve as a workflow performance evaluation - I would expect to find them in the appropriate positions when ranking the ligands). 
 *  CUDA: Although I don't have a dedicated GPU, both docking protocols are noticeably faster with CUDA integration, and they support it. 
 *  Parallelization: The current setup allows us to run the two dockings independently. However, the docking process can be further split on high-performance computers by separating each dataset into batches and assigning a dedicated device for each batch.
 *  Improvements in architectures and alternative tools can be implemented by relocating the dataset and receptor files from the `Autodock-Vina folder` to a dedicated general folder. Additionally, an alternative docking workflow, such as Uni-Dock, can be introduced. Now, there is a single interactive `bash.sh` file that prompts the user at the beginning to choose between the docking protocols: Autodock-Vina or Uni-Dock (same for the ML docking protocol).
