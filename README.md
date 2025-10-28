@@ -10,7 +10,13 @@ This workflow automates the process of screening multiple molecules (stored as S
 <p align="center">
 <em>Schematic view of the workflow and one of the best candidates (id-num 25)</em>
 </p>
-All the outputs are provided for a dataset of ≈300 molecules for an alternative inhibitor of CDK2. There are two ways to utilize this workflow: one involves automated bash.sh commands for both Vina and Boltz, along with extracting several candidates with additional properties. The second would be to follow the documentation file and run each step separately to have precise control over each step. In both cases, the commands (.py or .sh) must be executed with a previously activated environment, as outlined below.  
+
+All the outputs are provided for a dataset of ≈300 molecules for an alternative inhibitor of CDK2. 
+
+There are two ways to utilize this workflow: 
+
+- One way involves running the automated bash commands for both Vina and Boltz, which also add several additional properties to the candidates. 
+- The second would be to follow the [Docs/documentations.md](Docs/documentations.md) file and run each step separately to have precise control over each step. In both cases, the commands (.py or .sh) must be executed with a previously activated environment, as outlined below.  
 
 # Environments and Installations
 
