@@ -22,19 +22,21 @@ I recommend separate environments for the 3 steps: [AutoDock Vina](https://autod
 
 ## Autodock-Vina
 
+To create a dedicated environment for the Autodock-Vina docking, I'm using [conda](https://anaconda.org/anaconda/conda):
+
 ```
 conda create -n vina python=3
 conda activate vina
 ```
 
-The following command to install NumPy and AutoDock Vina:
+To install NumPy and AutoDock Vina, you need to run the following command:
 
 ```
 conda install -c conda-forge numpy swig boost-cpp libboost sphinx sphinx_rtd_theme
 pip install vina
 ```
 
-In the same environment of vina we also need to install [molscrub](https://github.com/forlilab/molscrub).
+In the same environment of vina we also need to install [molscrub](https://github.com/forlilab/molscrub):
 
 ```
 git clone git@github.com:forlilab/molscrub.git
@@ -55,15 +57,14 @@ We also need a dedicated environment for boltz
 ```
 conda create -n boltz2 python=3.11 -y
 conda activate boltz2
-
 pip install boltz
 ```
 
 In my case, I don't have a dedicated GPU, and I will run everything on the CPU.
 
-## Deepchem: additional properties
+## Additional properties: DeepChem
 
-I will also need a dedicated environment for the DeepChem package used for calculating additional properties:
+We will also need a dedicated environment for the [DeepChem](https://deepchem.io/tutorials/the-basic-tools-of-the-deep-life-sciences/) package used for calculating additional properties:
 
 ```
 conda create -n deepchem_env
@@ -73,7 +74,7 @@ pip install deepchem
 
 # Running the workflow
 
-Before running the workflow, we must prepare the ligands (a .csv file with smiles) and the receptor (see [Docs/documentations.md](Docs/documentations.md)), but for simplicity, I'm already providing them in the `Autodock-Vina/ligands` and `Autodock-Vina/receptor`. Each step includes dedicated logging, and examples can be found in the documentation.
+Before running the workflow, we must prepare the ligands and the receptor files (see [Docs/documentations.md](Docs/documentations.md)). For simplicity, I'm already providing them in the `Autodock-Vina/ligands` and `Autodock-Vina/receptor`. Each step includes dedicated logging, and examples can be found in the documentation.
 
 If everything has been installed correctly, we can now run the workflow by activating the environment and executing the following command:
 
