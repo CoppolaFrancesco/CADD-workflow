@@ -12,7 +12,8 @@
 * [Additional Properties](#additional-properties)
   * [Sorting](#sorting)
   * [RDKit and DeepChem](#rdkit-and-deepchem)
-* [BFE](#bfe) 
+* [BFE](#bfe)
+* [Experimental studies](#experimental-studies)
 
 # Detailed Documentation
 In this document, we will execute each step manually, without relying on the automated bash scripts. All necessary files are included in the folders described below. This setup workflow enables me to manage each step individually and easily identify potential problems. However, these steps could be combined into a single file, such as consolidating all the Python scripts. The original idea was to offer several alternatives. For example, instead of using AutoDock Vina, one could run Uni-Dock. Creating a separate block for this alternative during the design of the workflow provides several benefits, enhancing the overall flexibility of the workflow. Another interesting feature of this architecture is that it allows us to easily add a parallelization process in the future, where we can create and process a batch of several ligands on different devices without big modifications.
@@ -693,3 +694,11 @@ When using NAMD, it’s important to note that while the software is completely 
 Other common tools are: [OpenFE (Open Free Energy)](https://github.com/OpenFreeEnergy/openfe); [AToM-OpenMM](https://github.com/Gallicchio-Lab/AToM-OpenMM), which requires [OpenMM](https://github.com/openmm/openmm), a known molecular dynamics library.
 
 The [Fragment Molecular Orbital](https://pubs.acs.org/doi/full/10.1021/acsomega.2c08132) is another known method for QM/MM enhancement for higher accuracy. Typically, a combination of QM and MM methods is used when facing challenging simulation situations, such as in metals, highly charged ligands, charge transfer, or when investigating covalent bond formation between ligands and receptors.
+
+# Experimental studies
+
+Before beginning this section, I want to point out that I believe this small docking test is not sufficient for further experimental exploration. While the workflow appears to function well, as evidenced by the inclusion of our original ligand (NU6094) in the final list of candidates, it is clear that a more comprehensive and larger dataset should be utilized. In fact, most of the final candidates seem to present, for example, cardiac toxicity and poor solubility.  However, better properties prediction should also be calculated/obtained (such as the ADMET) before moving to this stage.
+
+In general, for the next steps, probably the best experimental workflow should take care of the cost/benefit of wet-lab analysis. I would say that the first priority would be given to the "hit confirmation", where biochemical assays, like TR-FRET assay or fluorescence assay, are used to see if the inhibition actually occurs. Determine IC₅₀ or EC₅₀ values, dose-dependent response (plateau). Good values should be around IC₅₀ < 10-50 µM. However, this method doesn't provide a description of the direct binding, so the next steps would be the calculation of some binding kinetics like BLI ot ITC for Kd values (0.1-100 µM). NMR is also a powerful method for looking at the ligands or protein signals. And of course, the X-ray Crystallography (if possible).
+
+If the previous experimental tests are satisfactory, we can then proceed to the selectivity and specificity study, in which protein homologs will be tested with the same candidate ligand (i.e., CDK1) as well as other similar proteins. Follows the cellular validation and the ADMET study (among many, the metabolic stability, cytotoxicity, hERG liability - cardiac toxicity, ...).
